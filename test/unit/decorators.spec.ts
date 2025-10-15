@@ -1,6 +1,6 @@
 import { IoCContainer } from '../../src/container/container';
-import { Inject, Config, Singleton, Scope, Scoped, Factory } from '../../src/typescript-ioc';
-import { OnlyInstantiableByContainer, InjectValue } from '../../src/decorators';
+import { InjectValue, OnlyInstantiableByContainer } from '../../src/decorators';
+import { Config, Factory, Inject, Scope, Scoped, Singleton } from '../../src/typescript-ioc';
 
 jest.mock('../../src/container/container');
 const mockInjectProperty = IoCContainer.injectProperty as jest.Mock;
@@ -16,7 +16,7 @@ describe('@Inject decorator', () => {
         class SimppleInject {
             @Inject public dateProperty: Date;
         }
-        expect(mockInjectProperty).toBeCalledWith(SimppleInject, 'dateProperty', Date);
+        expect(mockInjectProperty).toHaveBeenCalledWith(SimppleInject, 'dateProperty', Date);
     });
 
     it('should inject new values on constructor parameters', () => {
@@ -29,7 +29,7 @@ describe('@Inject decorator', () => {
                 @Inject public myProp: String
             ) {}
         }
-        expect(mockBind).toBeCalledWith(ConstructorInjected);
+        expect(mockBind).toHaveBeenCalledWith(ConstructorInjected);
         expect(config.paramTypes).toStrictEqual([Date, String]);
     });
 
@@ -40,14 +40,14 @@ describe('@Inject decorator', () => {
             }
         }
 
-        expect(mockBind).not.toBeCalledWith(MethodInjected);
+        expect(mockBind).not.toHaveBeenCalledWith(MethodInjected);
     });
 
     it('can not be used on classes directly', () => {
         const testFunction = () => {
             @Inject
             class ClassInjected {}
-            expect(mockBind).not.toBeCalledWith(ClassInjected);
+            expect(mockBind).not.toHaveBeenCalledWith(ClassInjected);
         };
 
         expect(testFunction).toThrow(new TypeError('Invalid @Inject Decorator declaration.'));
@@ -68,7 +68,7 @@ describe('@InjectValue decorator', () => {
         class SimppleInject {
             @InjectValue('myDate') public dateProperty: Date;
         }
-        expect(mockInjectValueProperty).toBeCalledWith(SimppleInject, 'dateProperty', 'myDate');
+        expect(mockInjectValueProperty).toHaveBeenCalledWith(SimppleInject, 'dateProperty', 'myDate');
     });
 
     it('should inject new values on constructor parameters', () => {
@@ -81,7 +81,7 @@ describe('@InjectValue decorator', () => {
                 @Inject public myProp: String
             ) {}
         }
-        expect(mockBind).toBeCalledWith(ConstructorInjected);
+        expect(mockBind).toHaveBeenCalledWith(ConstructorInjected);
         expect(config.paramTypes).toStrictEqual(['myDate', String]);
     });
 
@@ -92,14 +92,14 @@ describe('@InjectValue decorator', () => {
             }
         }
 
-        expect(mockBind).not.toBeCalledWith(MethodInjected);
+        expect(mockBind).not.toHaveBeenCalledWith(MethodInjected);
     });
 
     it('can not be used on classes directly', () => {
         const testFunction = () => {
             @InjectValue('myDate')
             class ClassInjected {}
-            expect(mockBind).not.toBeCalledWith(ClassInjected);
+            expect(mockBind).not.toHaveBeenCalledWith(ClassInjected);
         };
 
         expect(testFunction).toThrow(new TypeError('Invalid @InjectValue Decorator declaration.'));
@@ -129,8 +129,8 @@ describe('@Singleton decorator', () => {
     it('should configure the class binding into a singleton scope', () => {
         @Singleton
         class SingletonInject {}
-        expect(mockBind).toBeCalledWith(SingletonInject);
-        expect(mockScope).toBeCalledWith(Scope.Singleton);
+        expect(mockBind).toHaveBeenCalledWith(SingletonInject);
+        expect(mockScope).toHaveBeenCalledWith(Scope.Singleton);
     });
 });
 
@@ -145,8 +145,8 @@ describe('@Scoped decorator', () => {
     it('should configure the class binding into a custom scope', () => {
         @Scoped(Scope.Local)
         class ScopedInject {}
-        expect(mockBind).toBeCalledWith(ScopedInject);
-        expect(mockScope).toBeCalledWith(Scope.Local);
+        expect(mockBind).toHaveBeenCalledWith(ScopedInject);
+        expect(mockScope).toHaveBeenCalledWith(Scope.Local);
     });
 });
 
@@ -162,8 +162,8 @@ describe('@Factory decorator', () => {
         const factory = () => new ProvidedInject();
         @Factory(factory)
         class ProvidedInject {}
-        expect(mockBind).toBeCalledWith(ProvidedInject);
-        expect(mockFactory).toBeCalledWith(factory);
+        expect(mockBind).toHaveBeenCalledWith(ProvidedInject);
+        expect(mockFactory).toHaveBeenCalledWith(factory);
     });
 });
 
@@ -183,7 +183,7 @@ describe('@OnlyInstantiableByContainer decorator', () => {
         class WiredInject {}
 
         expect(OnlyInstantiableByContainer(WiredInject)).toEqual(constructor);
-        expect(mockBind).toBeCalledWith(WiredInject);
-        expect(mockInstrumentConstructor).toBeCalled();
+        expect(mockBind).toHaveBeenCalledWith(WiredInject);
+        expect(mockInstrumentConstructor).toHaveBeenCalled();
     });
 });

@@ -1,5 +1,5 @@
-import { InjectorHandler } from '../../../src/container/injection-handler';
 import { IoCBindConfig, IoCBindValueConfig, PropertyPath } from '../../../src/container/container-binding-config';
+import { InjectorHandler } from '../../../src/container/injection-handler';
 import { BuildContext, ObjectFactory } from '../../../src/model';
 
 jest.mock('../../../src/container/injection-handler');
@@ -54,7 +54,7 @@ describe('IoCBindConfig', () => {
             const bindConfig = new IoCBindConfig(MyBaseType, mockInstanceFactory, mockValueFactory);
 
             expect(bindConfig.instrumentConstructor()).toEqual(bindConfig);
-            expect(mockInjectorInstrumentConstructor).toBeCalledWith(MyBaseType);
+            expect(mockInjectorInstrumentConstructor).toHaveBeenCalledWith(MyBaseType);
             expect(MyBaseType.constructor).toStrictEqual(decoratedConstructor);
             expect(bindConfig.decoratedConstructor).toStrictEqual(decoratedConstructor);
         });
@@ -76,7 +76,7 @@ describe('IoCBindConfig', () => {
 
             expect(bindConfig.scope(scope)).toEqual(bindConfig);
             expect(bindConfig.iocScope).toEqual(scope);
-            expect(mockScopeInit).toBeCalledWith(MyBaseType);
+            expect(mockScopeInit).toHaveBeenCalledWith(MyBaseType);
         });
 
         it('should finish any previous scope before configure a new one', () => {
@@ -88,8 +88,8 @@ describe('IoCBindConfig', () => {
 
             expect(bindConfig.scope(scope)).toEqual(bindConfig);
             expect(bindConfig.iocScope).toEqual(scope);
-            expect(mockScopeInit).toBeCalledWith(MyBaseType);
-            expect(previousScope.finish).toBeCalledWith(MyBaseType);
+            expect(mockScopeInit).toHaveBeenCalledWith(MyBaseType);
+            expect(previousScope.finish).toHaveBeenCalledWith(MyBaseType);
         });
     });
 
@@ -103,10 +103,10 @@ describe('IoCBindConfig', () => {
             mockInjectorUnBlockInstantiation.mockReturnValue(blocked);
             expect(bindConfig.factory(factory)).toEqual(bindConfig);
             expect(bindConfig.iocFactory(context)).toEqual(instance);
-            expect(mockInjectorUnBlockInstantiation).toBeCalled();
-            expect(factory).toBeCalledWith(context);
-            expect(mockInjectorInjectContext).toBeCalledWith(instance, context);
-            expect(mockInjectorBlockInstantiation).toBeCalledWith(blocked);
+            expect(mockInjectorUnBlockInstantiation).toHaveBeenCalled();
+            expect(factory).toHaveBeenCalledWith(context);
+            expect(mockInjectorInjectContext).toHaveBeenCalledWith(instance, context);
+            expect(mockInjectorBlockInstantiation).toHaveBeenCalledWith(blocked);
         });
 
         it('should call scope.reset after changing the factory', () => {
@@ -115,7 +115,7 @@ describe('IoCBindConfig', () => {
 
             const factory = () => new MyBaseType();
             expect(bindConfig.factory(factory)).toEqual(bindConfig);
-            expect(mockScopeReset).toBeCalledWith(MyBaseType);
+            expect(mockScopeReset).toHaveBeenCalledWith(MyBaseType);
         });
     });
 
@@ -129,7 +129,7 @@ describe('IoCBindConfig', () => {
             mockScopeResolve.mockReturnValue(instance);
 
             expect(bindConfig.getInstance(buildContext)).toEqual(instance);
-            expect(bindConfig.iocScope.resolve).toBeCalledWith(bindConfig.iocFactory, MyBaseType, buildContext);
+            expect(bindConfig.iocScope.resolve).toHaveBeenCalledWith(bindConfig.iocFactory, MyBaseType, buildContext);
         });
 
         it('shoud retrieve instances for instrumented constructors', () => {
@@ -145,7 +145,7 @@ describe('IoCBindConfig', () => {
             bindConfig.instrumentConstructor();
 
             expect(bindConfig.getInstance(buildContext)).toEqual(instance);
-            expect(bindConfig.iocScope.resolve).toBeCalledWith(bindConfig.iocFactory, MyBaseType, buildContext);
+            expect(bindConfig.iocScope.resolve).toHaveBeenCalledWith(bindConfig.iocFactory, MyBaseType, buildContext);
         });
     });
 
@@ -162,8 +162,8 @@ describe('IoCBindConfig', () => {
             expect(bindConfig.to(MyType as any)).toEqual(bindConfig);
             expect(bindConfig.iocFactory(context)).toEqual(instance);
             expect(bindConfig.targetSource).toEqual(MyType);
-            expect(mockInjectorCheckType).toBeCalledWith(MyType);
-            expect(mockInjectorInjectContext).toBeCalledWith(instance, context);
+            expect(mockInjectorCheckType).toHaveBeenCalledWith(MyType);
+            expect(mockInjectorInjectContext).toHaveBeenCalledWith(instance, context);
         });
 
         it('should reset scope after change configuration', () => {
@@ -177,7 +177,7 @@ describe('IoCBindConfig', () => {
 
             expect(bindConfig.to(MyType as any)).toEqual(bindConfig);
             expect(bindConfig.iocFactory()).toEqual(instance);
-            expect(mockScopeReset).toBeCalledWith(MyBaseType);
+            expect(mockScopeReset).toHaveBeenCalledWith(MyBaseType);
         });
 
         it('should pass parameters for type constructor in the generated provider', () => {
@@ -194,10 +194,10 @@ describe('IoCBindConfig', () => {
             expect(bindConfig.to(MyType as any)).toEqual(bindConfig);
             const newInstance = bindConfig.iocFactory(buildContext) as MyType;
             expect(newInstance.date).toBeDefined();
-            expect(mockInstanceFactory).toBeCalledWith(Date, buildContext);
-            expect(mockInjectorInjectContext).toBeCalledWith(MyType, buildContext);
-            expect(mockInjectorUnBlockInstantiation).toBeCalled();
-            expect(mockInjectorRemoveContext).toBeCalledWith(MyType);
+            expect(mockInstanceFactory).toHaveBeenCalledWith(Date, buildContext);
+            expect(mockInjectorInjectContext).toHaveBeenCalledWith(MyType, buildContext);
+            expect(mockInjectorUnBlockInstantiation).toHaveBeenCalled();
+            expect(mockInjectorRemoveContext).toHaveBeenCalledWith(MyType);
         });
 
         it('should support instrumented constructors', () => {
@@ -211,8 +211,8 @@ describe('IoCBindConfig', () => {
             const newInstance = bindConfig.iocFactory(buildContext);
             expect(newInstance).toBeDefined();
             expect(newInstance).toBeInstanceOf(ExtendedType);
-            expect(mockInjectorInjectContext).toBeCalledWith(ExtendedType, buildContext);
-            expect(mockInjectorRemoveContext).toBeCalledWith(ExtendedType);
+            expect(mockInjectorInjectContext).toHaveBeenCalledWith(ExtendedType, buildContext);
+            expect(mockInjectorRemoveContext).toHaveBeenCalledWith(ExtendedType);
         });
     });
 });
@@ -269,7 +269,7 @@ describe('PropertyPath', () => {
 
         it('shoud return null for invalid property', () => {
             expect(() => PropertyPath.parse('.mypath')).toThrow(
-                new TypeError(`Invalid value [.mypath] passed to Container.bindName`)
+                new TypeError('Invalid value [.mypath] passed to Container.bindName')
             );
         });
     });
