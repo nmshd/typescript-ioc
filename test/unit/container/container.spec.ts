@@ -1,6 +1,6 @@
-import { InjectorHandler } from '../../../src/container/injection-handler';
 import { IoCContainer } from '../../../src/container/container';
 import { IoCBindConfig, IoCBindValueConfig, PropertyPath } from '../../../src/container/container-binding-config';
+import { InjectorHandler } from '../../../src/container/injection-handler';
 import { BuildContext, ObjectFactory } from '../../../src/model';
 
 jest.mock('../../../src/container/injection-handler');
@@ -84,10 +84,10 @@ describe('Container', () => {
 
             const bind = IoCContainer.bind(MyBaseType);
 
-            expect(mockCheckType).toBeCalledWith(MyBaseType);
-            expect(mockGetConstructorFromType).toBeCalledWith(MyBaseType);
-            expect(mockIoCBindConfig).toBeCalledWith(constructor, IoCContainer.get, IoCContainer.getValue);
-            expect(mockTo).toBeCalledWith(MyBaseType);
+            expect(mockCheckType).toHaveBeenCalledWith(MyBaseType);
+            expect(mockGetConstructorFromType).toHaveBeenCalledWith(MyBaseType);
+            expect(mockIoCBindConfig).toHaveBeenCalledWith(constructor, IoCContainer.get, IoCContainer.getValue);
+            expect(mockTo).toHaveBeenCalledWith(MyBaseType);
 
             expect(bind).toStrictEqual(config);
         });
@@ -105,10 +105,10 @@ describe('Container', () => {
 
             const bind = IoCContainer.bindName(`${valueName}.${path}`);
 
-            expect(mockCheckName).toBeCalledWith(`${valueName}.${path}`);
-            expect(mockGetValue).toBeCalledWith(valueName);
-            expect(mockIoCBindValueConfig).toBeCalledWith(valueName);
-            expect(mockSetValue).toBeCalledWith(valueName, valueConfig);
+            expect(mockCheckName).toHaveBeenCalledWith(`${valueName}.${path}`);
+            expect(mockGetValue).toHaveBeenCalledWith(valueName);
+            expect(mockIoCBindValueConfig).toHaveBeenCalledWith(valueName);
+            expect(mockSetValue).toHaveBeenCalledWith(valueName, valueConfig);
 
             expect(bind).toMatchObject({
                 path: path
@@ -135,8 +135,8 @@ describe('Container', () => {
 
             const result = IoCContainer.get(MyBaseType, context);
 
-            expect(mockGetInstance).toBeCalledWith(context);
-            expect(mockTo).toBeCalledTimes(1);
+            expect(mockGetInstance).toHaveBeenCalledWith(context);
+            expect(mockTo).toHaveBeenCalledTimes(1);
             expect(result).toStrictEqual(instance);
         });
 
@@ -150,8 +150,8 @@ describe('Container', () => {
 
             const result = IoCContainer.get(MyBaseType, context);
 
-            expect(mockGetInstance).toBeCalledWith(context);
-            expect(mockTo).toBeCalledTimes(2);
+            expect(mockGetInstance).toHaveBeenCalledWith(context);
+            expect(mockTo).toHaveBeenCalledTimes(2);
             expect(result).toStrictEqual(instance);
         });
     });
@@ -170,7 +170,7 @@ describe('Container', () => {
 
             const result = IoCContainer.getValue(`${valueName}.${path}`);
 
-            expect(mockConfigGetValue).toBeCalled();
+            expect(mockConfigGetValue).toHaveBeenCalled();
             expect(result).toStrictEqual(value);
         });
     });
@@ -184,8 +184,8 @@ describe('Container', () => {
                 TypeError(`The type MyBaseType hasn't been registered with the IOC Container`)
             );
 
-            expect(mockCheckType).toBeCalledWith(MyBaseType);
-            expect(mockGetConstructorFromType).toBeCalledWith(MyBaseType);
+            expect(mockCheckType).toHaveBeenCalledWith(MyBaseType);
+            expect(mockGetConstructorFromType).toHaveBeenCalledWith(MyBaseType);
         });
 
         it('should return target type for a type bound to the container', () => {
@@ -200,9 +200,9 @@ describe('Container', () => {
 
             const result = IoCContainer.getType(MyBaseType);
 
-            expect(mockCheckType).toBeCalledWith(MyBaseType);
-            expect(mockGetConstructorFromType).toBeCalledWith(MyBaseType);
-            expect(mockGet).toBeCalledWith(constructor);
+            expect(mockCheckType).toHaveBeenCalledWith(MyBaseType);
+            expect(mockGetConstructorFromType).toHaveBeenCalledWith(MyBaseType);
+            expect(mockGet).toHaveBeenCalledWith(constructor);
             expect(result).toStrictEqual({ target: 'source' });
         });
 
@@ -218,9 +218,9 @@ describe('Container', () => {
 
             const result = IoCContainer.getType(MyBaseType);
 
-            expect(mockCheckType).toBeCalledWith(MyBaseType);
-            expect(mockGetConstructorFromType).toBeCalledWith(MyBaseType);
-            expect(mockGet).toBeCalledWith(constructor);
+            expect(mockCheckType).toHaveBeenCalledWith(MyBaseType);
+            expect(mockGetConstructorFromType).toHaveBeenCalledWith(MyBaseType);
+            expect(mockGet).toHaveBeenCalledWith(constructor);
             expect(result).toStrictEqual({ target: 'source' });
         });
     });
@@ -230,7 +230,7 @@ describe('Container', () => {
             class MyBaseType {}
             IoCContainer.injectProperty(MyBaseType, 'prop', Date);
 
-            expect(mockInjectProperty).toBeCalledWith(MyBaseType, 'prop', Date, IoCContainer.get);
+            expect(mockInjectProperty).toHaveBeenCalledWith(MyBaseType, 'prop', Date, IoCContainer.get);
         });
     });
 
@@ -239,8 +239,8 @@ describe('Container', () => {
             const namespaceName = 'mynamespace';
             const namespace = IoCContainer.namespace(namespaceName);
             namespace.remove();
-            expect(mockSelectNamespace).toBeCalledWith(namespaceName);
-            expect(mockRemoveNamespace).toBeCalledWith(namespaceName);
+            expect(mockSelectNamespace).toHaveBeenCalledWith(namespaceName);
+            expect(mockRemoveNamespace).toHaveBeenCalledWith(namespaceName);
         });
     });
 
@@ -249,7 +249,7 @@ describe('Container', () => {
             const namespaceName = 'mynamespace';
             mockSelectedNamespace.mockReturnValue(namespaceName);
             expect(IoCContainer.selectedNamespace()).toEqual(namespaceName);
-            expect(mockSelectedNamespace).toBeCalledTimes(1);
+            expect(mockSelectedNamespace).toHaveBeenCalledTimes(1);
         });
     });
 });
