@@ -13,29 +13,29 @@ It can be used on browser, on react native or on node.js server code.
 
 **Table of Contents**
 
--   [IoC Container for Typescript](#)
-    -   [Installation](#installation)
-    -   [Configuration](#configuration)
-    -   [Basic Usage](#basic-usage)
-    -   [Scopes](#scopes)
-        -   [Singleton Scope](#singleton)
-        -   [Request Scope](#inrequestscope)
-        -   [Local Scope](#local-scope)
-        -   [Custom Scopes](#custom-scopes)
-    -   [@Factory](#factories)
-    -   [@OnlyInstantiableByContainer](#the-onlyinstantiablebycontainer-annotation)
-    -   [The Container Class](#the-container-class)
-        -   [@InjectValue decorator and Constants](#injectvalue-decorator-and-constants)
-        -   [Namespaces (Environments)](#namespaces-environments)
-        -   [Creating temporary configurations](#creating-temporary-configurations)
-        -   [Importing configurations from external file](#importing-configurations-from-external-file)
-    -   [A note about classes and interfaces](#a-note-about-classes-and-interfaces)
-    -   [Examples](#examples)
-        -   [Using Container for testing](#using-container-for-testing)
-        -   [Using Namespaces](#using-namespaces)
-    -   [Browser usage](#browser-usage)
-    -   [Restrictions](#restrictions)
-    -   [Migrating from previous version](#migrating-from-previous-version)
+- [IoC Container for Typescript](#)
+    - [Installation](#installation)
+    - [Configuration](#configuration)
+    - [Basic Usage](#basic-usage)
+    - [Scopes](#scopes)
+        - [Singleton Scope](#singleton)
+        - [Request Scope](#inrequestscope)
+        - [Local Scope](#local-scope)
+        - [Custom Scopes](#custom-scopes)
+    - [@Factory](#factories)
+    - [@OnlyInstantiableByContainer](#the-onlyinstantiablebycontainer-annotation)
+    - [The Container Class](#the-container-class)
+        - [@InjectValue decorator and Constants](#injectvalue-decorator-and-constants)
+        - [Namespaces (Environments)](#namespaces-environments)
+        - [Creating temporary configurations](#creating-temporary-configurations)
+        - [Importing configurations from external file](#importing-configurations-from-external-file)
+    - [A note about classes and interfaces](#a-note-about-classes-and-interfaces)
+    - [Examples](#examples)
+        - [Using Container for testing](#using-container-for-testing)
+        - [Using Namespaces](#using-namespaces)
+    - [Browser usage](#browser-usage)
+    - [Restrictions](#restrictions)
+    - [Migrating from previous version](#migrating-from-previous-version)
 
 ## Installation
 
@@ -709,7 +709,7 @@ Starting from version 2, this library only works in browsers that supports javas
 
 ## Restrictions
 
--   Circular injections are not supported
+- Circular injections are not supported
 
 ## Migrating from previous version
 
