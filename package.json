@@ -1,6 +1,6 @@
 {
   "name": "@nmshd/typescript-ioc",
-  "version": "3.2.4",
+  "version": "3.2.5",
   "description": "A Lightweight annotation-based dependency injection container for typescript.",
   "keywords": [
     "ioc",
