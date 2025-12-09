@@ -8,8 +8,6 @@ updates:
       update-github-actions-dependencies:
         patterns:
           - '*'
-    reviewers:
-      - 'jkoenig134'
     labels:
       - 'dependencies'
 
@@ -21,7 +19,5 @@ updates:
       update-npm-dependencies:
         patterns:
           - '*'
-    reviewers:
-      - 'jkoenig134'
     labels:
       - 'dependencies'
