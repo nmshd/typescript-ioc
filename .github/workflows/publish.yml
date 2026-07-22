@@ -28,5 +28,6 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build
+      - run: npm version --no-git-tag-version ${{ github.ref_name }}
       - run: npx enhanced-publish --if-possible --use-preid-as-tag
     needs: ['run-checks']
